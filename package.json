@@ -1,0 +1,13 @@
+{
+  "name": "emso-solarne-elektrane",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "EMSO – web stranica za solarne elektrane i punionice (statički build bez ovisnosti)",
+  "scripts": {
+    "build": "node build.mjs",
+    "build:prod": "SITE_URL=https://emso.hr node build.mjs",
+    "serve": "python3 -m http.server 8080 --directory dist"
+  },
+  "engines": { "node": ">=18" }
+}

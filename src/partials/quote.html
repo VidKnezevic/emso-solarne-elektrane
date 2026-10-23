@@ -1,0 +1,107 @@
+<section class="section section--dark quote" id="ponuda" aria-labelledby="ponuda-title">
+  <div class="quote__glow" aria-hidden="true"></div>
+  <div class="container quote__grid">
+    <div class="quote__intro">
+      <p class="eyebrow eyebrow--light">Besplatna ponuda</p>
+      <h2 class="h2" id="ponuda-title">Ponuda po mjeri <em>u 60 sekundi</em>.</h2>
+      <p class="lead lead--light">Odgovorite na nekoliko pitanja i naš stručnjak pripremit će vam ponudu prilagođenu vašem krovu, potrošnji i planovima. Bez obveze.</p>
+      <ul class="ticks ticks--light">
+        <li><svg width="20" height="20" aria-hidden="true"><use href="#i-check"/></svg>Savjetovanje i izrada ponude – besplatno</li>
+        <li><svg width="20" height="20" aria-hidden="true"><use href="#i-check"/></svg>Projekt, HEP dokumentacija i montaža na jednom mjestu</li>
+        <li><svg width="20" height="20" aria-hidden="true"><use href="#i-check"/></svg>Vlastiti ovlašteni instalateri i mehanizacija</li>
+      </ul>
+      <div class="quote__direct">
+        <span>Radije biste razgovarali?</span>
+        <a href="tel:{{c.phoneHref}}">{{c.phone}}</a>
+      </div>
+    </div>
+
+    <form class="wizard card-glass" data-wizard data-endpoint="{{formEndpoint}}" data-email="{{c.email}}" action="mailto:{{c.email}}" method="post" enctype="text/plain" novalidate>
+      <div class="wizard__progress" aria-hidden="true"><span data-wizard-bar></span></div>
+      <p class="wizard__step-label" data-wizard-label aria-live="polite">Korak 1 od 4</p>
+
+      <fieldset class="wizard__step" data-step="1">
+        <legend class="wizard__q">Što vas zanima?</legend>
+        <div class="choices choices--cards">
+          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana" checked><span><svg width="22" height="22" aria-hidden="true"><use href="#i-panel"/></svg>Solarna elektrana</span></label>
+          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana + baterija"><span><svg width="22" height="22" aria-hidden="true"><use href="#i-battery"/></svg>Elektrana + baterija</span></label>
+          <label class="choice"><input type="radio" name="interes" value="Punionica za električni automobil"><span><svg width="22" height="22" aria-hidden="true"><use href="#i-plug"/></svg>Punionica za auto</span></label>
+          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana + punionica"><span><svg width="22" height="22" aria-hidden="true"><use href="#i-car"/></svg>Elektrana + punionica</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="wizard__step" data-step="2">
+        <legend class="wizard__q">Za kakav objekt?</legend>
+        <div class="choices">
+          <label class="choice choice--pill"><input type="radio" name="objekt" value="Obiteljska kuća" checked><span>Obiteljska kuća</span></label>
+          <label class="choice choice--pill"><input type="radio" name="objekt" value="Vikendica"><span>Vikendica</span></label>
+          <label class="choice choice--pill"><input type="radio" name="objekt" value="Stambena zgrada"><span>Stambena zgrada</span></label>
+          <label class="choice choice--pill"><input type="radio" name="objekt" value="Tvrtka / poslovni objekt"><span>Tvrtka</span></label>
+          <label class="choice choice--pill"><input type="radio" name="objekt" value="Poljoprivredni objekt"><span>Poljoprivreda</span></label>
+        </div>
+        <p class="wizard__sub">Vrsta krova</p>
+        <div class="choices">
+          <label class="choice choice--pill"><input type="radio" name="krov" value="Crijep" checked><span>Crijep</span></label>
+          <label class="choice choice--pill"><input type="radio" name="krov" value="Lim / sendvič panel"><span>Lim / sendvič</span></label>
+          <label class="choice choice--pill"><input type="radio" name="krov" value="Ravni krov"><span>Ravni krov</span></label>
+          <label class="choice choice--pill"><input type="radio" name="krov" value="Nije krov / tlo / nadstrešnica"><span>Tlo / nadstrešnica</span></label>
+          <label class="choice choice--pill"><input type="radio" name="krov" value="Nisam siguran/na"><span>Nisam siguran/na</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="wizard__step" data-step="3">
+        <legend class="wizard__q">Lokacija i potrošnja</legend>
+        <div class="field-row">
+          <label class="field">
+            <span>Mjesto ugradnje *</span>
+            <input type="text" name="mjesto" autocomplete="address-level2" placeholder="npr. Velika Gorica" required>
+          </label>
+          <label class="field">
+            <span>Prosječni mjesečni račun (€)</span>
+            <input type="number" name="racun" inputmode="numeric" min="0" step="1" placeholder="npr. 120">
+          </label>
+        </div>
+        <label class="field">
+          <span>Napomena (nije obavezno)</span>
+          <textarea name="napomena" rows="3" placeholder="npr. planiramo dizalicu topline, krov je okrenut prema jugu…"></textarea>
+        </label>
+        <input type="hidden" name="izracun" value="" data-calc-summary>
+      </fieldset>
+
+      <fieldset class="wizard__step" data-step="4">
+        <legend class="wizard__q">Kome šaljemo ponudu?</legend>
+        <label class="field">
+          <span>Ime i prezime *</span>
+          <input type="text" name="ime" autocomplete="name" required>
+        </label>
+        <div class="field-row">
+          <label class="field">
+            <span>E-mail *</span>
+            <input type="email" name="email" autocomplete="email" required>
+          </label>
+          <label class="field">
+            <span>Telefon *</span>
+            <input type="tel" name="telefon" autocomplete="tel" required>
+          </label>
+        </div>
+        <label class="check">
+          <input type="checkbox" name="privatnost" value="da" required>
+          <span>Upoznat/a sam s <a href="https://emso.hr/pravila-privatnosti" target="_blank" rel="noopener">pravilima privatnosti</a> i pristajem da me EMSO kontaktira u vezi s ovim upitom.</span>
+        </label>
+      </fieldset>
+
+      <div class="wizard__nav">
+        <button type="button" class="btn btn--ghost" data-wizard-prev>Natrag</button>
+        <button type="button" class="btn btn--sun" data-wizard-next>Dalje<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <button type="submit" class="btn btn--sun" data-wizard-submit>Pošalji upit<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+      </div>
+      <p class="wizard__error" data-wizard-error role="alert"></p>
+
+      <div class="wizard__done" data-wizard-done hidden>
+        <div class="wizard__done-ico"><svg width="34" height="34" aria-hidden="true"><use href="#i-check"/></svg></div>
+        <p class="wizard__q">Hvala, upit je spreman!</p>
+        <p data-wizard-done-text>Javit ćemo vam se u najkraćem roku s prijedlogom rješenja i ponudom.</p>
+      </div>
+    </form>
+  </div>
+</section>
