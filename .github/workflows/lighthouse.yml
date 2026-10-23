@@ -16,6 +16,9 @@ jobs:
         page: ["", "elektro-punionice/", "poticaji-za-solarne-elektrane-2026/"]
         device: [mobile, desktop]
     steps:
+      - name: Pričekaj propagaciju CDN-a
+        if: ${{ github.event_name == 'workflow_run' }}
+        run: sleep 60
       - uses: actions/setup-node@v4
         with:
           node-version: 20

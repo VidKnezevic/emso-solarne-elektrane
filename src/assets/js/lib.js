@@ -29,6 +29,8 @@ export const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').match
 /** Pokreni fn tek kad se element približi ekranu (štedi rad pri učitavanju). */
 export function whenNear(el, fn, margin = '600px') {
   if (!('IntersectionObserver' in window)) return fn();
+  // Promatra se sekcija, ne element u njoj: sadržaj sekcija s content-visibility se tako ne mora računati unaprijed.
+  el = el.closest('main > section') || el;
   const io = new IntersectionObserver(
     (entries) => {
       if (entries.some((e) => e.isIntersecting)) {

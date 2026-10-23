@@ -1,5 +1,5 @@
 // Zajedničko ponašanje svih stranica: zaglavlje, izbornik, animacije, brojači i obrazac za ponudu.
-import { $, $$, n0, reduceMotion, fillRange, idle } from './lib.js';
+import { $, $$, n0, reduceMotion, fillRange, idle, whenNear } from './lib.js';
 
 const html = document.documentElement;
 
@@ -38,6 +38,15 @@ revealEls.forEach((el) => {
   const i = sibs.indexOf(el);
   if (i > 0) el.style.setProperty('--d', `${Math.min(i, 6) * 70}ms`);
 });
+/** Elemente promatraj tek kad se njihova sekcija približi ekranu. */
+const observeLazily = (els, io) => {
+  const bySection = new Map();
+  els.forEach((el) => {
+    const s = el.closest('main > section') || document.body;
+    bySection.set(s, [...(bySection.get(s) || []), el]);
+  });
+  bySection.forEach((list, s) => whenNear(s, () => list.forEach((el) => io.observe(el)), '200px'));
+};
 if ('IntersectionObserver' in window && !reduceMotion) {
   const io = new IntersectionObserver(
     (entries) => {
@@ -50,7 +59,7 @@ if ('IntersectionObserver' in window && !reduceMotion) {
     },
     { rootMargin: '0px 0px -8% 0px', threshold: 0.08 }
   );
-  revealEls.forEach((el) => io.observe(el));
+  observeLazily(revealEls, io);
 } else {
   revealEls.forEach((el) => el.classList.add('is-in'));
 }
@@ -81,7 +90,7 @@ if ('IntersectionObserver' in window) {
     },
     { threshold: 0.6 }
   );
-  counters.forEach((el) => co.observe(el));
+  observeLazily(counters, co);
 }
 
 /* ---------- Beskonačna traka partnera ---------- */
@@ -102,7 +111,7 @@ if (arc && 'IntersectionObserver' in window) {
       ao.disconnect();
     }
   });
-  ao.observe(arc);
+  observeLazily([arc], ao);
 }
 
 /* ---------- Aktivna stavka sadržaja vodiča ---------- */
@@ -120,10 +129,7 @@ if (tocLinks.length && 'IntersectionObserver' in window) {
     },
     { rootMargin: '-20% 0px -70% 0px' }
   );
-  map.forEach((_, id) => {
-    const h = document.getElementById(id);
-    if (h) to.observe(h);
-  });
+  observeLazily([...map.keys()].map((id) => document.getElementById(id)).filter(Boolean), to);
 }
 
 /* ---------- Klizači: popuna staze ---------- */
