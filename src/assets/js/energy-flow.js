@@ -1,8 +1,10 @@
 // Interaktivna simulacija tokova energije kroz jedan dan (5-minutni koraci).
-import { $, $$, n0, n1, reduceMotion } from './lib.js';
+import { $, $$, n0, n1, reduceMotion, whenNear } from './lib.js';
 
 const root = $('[data-flow]');
-if (root) {
+if (root) whenNear(root, initFlow);
+
+function initFlow() {
   const section = root.closest('.flow');
   const STEPS = 288;
   const DT = 24 / STEPS;

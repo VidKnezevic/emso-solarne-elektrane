@@ -1,5 +1,5 @@
 // Zajedničko ponašanje svih stranica: zaglavlje, izbornik, animacije, brojači i obrazac za ponudu.
-import { $, $$, n0, reduceMotion, fillRange } from './lib.js';
+import { $, $$, n0, reduceMotion, fillRange, idle } from './lib.js';
 
 const html = document.documentElement;
 
@@ -85,13 +85,13 @@ if ('IntersectionObserver' in window) {
 }
 
 /* ---------- Beskonačna traka partnera ---------- */
-$$('[data-marquee] .marquee__track').forEach((track) => {
+idle(() => $$('[data-marquee] .marquee__track').forEach((track) => {
   [...track.children].forEach((li) => {
     const clone = li.cloneNode(true);
     clone.setAttribute('aria-hidden', 'true');
     track.appendChild(clone);
   });
-});
+}));
 
 /* ---------- Mjerač u ilustraciji aplikacije ---------- */
 const arc = $('[data-app-arc]');

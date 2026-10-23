@@ -1,5 +1,5 @@
 // Brzi izračun u heroju i glavni kalkulator solarne elektrane.
-import { $, $$, n0, n1, eur, nice, fillRange, tween } from './lib.js';
+import { $, $$, n0, n1, eur, nice, fillRange, tween, whenNear } from './lib.js';
 import { simulate, recommendKwp, DEFAULT_PRICE, DEFAULT_EXPORT, REGIONS, MONTHS, PANEL_KWP } from './solar-model.js';
 
 const yrs = (v) => (v === null ? '> 25 god.' : `${n1(v)} god.`);
@@ -38,7 +38,14 @@ if (q) {
    Glavni kalkulator
    ========================================================= */
 const root = $('[data-calc]');
-if (root) {
+// Kalkulator se inicijalizira tek kad se približi ekranu; račun iz heroja pamti se do tada.
+let pendingBill = null;
+const rememberBill = (e) => (pendingBill = e.detail);
+document.addEventListener('emso:bill', rememberBill);
+if (root) whenNear(root, initCalc);
+
+function initCalc() {
+  document.removeEventListener('emso:bill', rememberBill);
   const form = $('[data-calc-form]', root);
   const el = (name) => form.elements[name];
   const usage = $('[data-usage]', root);
@@ -268,14 +275,15 @@ if (root) {
     render();
   });
 
-  document.addEventListener('emso:bill', (e) => {
+  const applyBill = (value) => {
     form.querySelector('input[name="mode"][value="bill"]').checked = true;
     form.querySelector('input[name="tip"][value="kuca"]').checked = true;
     subsidyWrap.hidden = false;
     manualKwp = false;
-    applyUsageRange(e.detail);
+    applyUsageRange(value);
     render();
-  });
+  };
+  document.addEventListener('emso:bill', (e) => applyBill(e.detail));
   $$('[data-calc-preset]').forEach((a) =>
     a.addEventListener('click', () => {
       const r = form.querySelector(`input[name="tip"][value="${a.dataset.calcPreset}"]`);
@@ -316,4 +324,5 @@ if (root) {
   el('exportPrice').value = DEFAULT_EXPORT;
   applyUsageRange();
   render();
+  if (pendingBill !== null) applyBill(pendingBill);
 }

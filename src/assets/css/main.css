@@ -368,7 +368,7 @@ address { font-style: normal; }
 
 /* ---------- Sekcije ---------- */
 .section { position: relative; padding-block: clamp(84px, 9vw, 144px); }
-main > .section, .ftr { content-visibility: auto; contain-intrinsic-size: auto 900px; }
+main > .section { content-visibility: auto; contain-intrinsic-size: auto 900px; }
 .section--tight { padding-block: clamp(48px, 6vw, 80px); }
 .section--dark { background: var(--navy-950); color: #fff; overflow: hidden; }
 .section--paper { background: var(--paper); }

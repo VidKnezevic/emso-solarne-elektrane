@@ -26,6 +26,24 @@ export const $ = (s, r = document) => r.querySelector(s);
 export const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 export const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/** Pokreni fn tek kad se element približi ekranu (štedi rad pri učitavanju). */
+export function whenNear(el, fn, margin = '600px') {
+  if (!('IntersectionObserver' in window)) return fn();
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        fn();
+      }
+    },
+    { rootMargin: margin }
+  );
+  io.observe(el);
+}
+
+/** Odgodi nekritičan posao do trenutka kad je preglednik slobodan. */
+export const idle = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
+
 /** Glatko "odbrojavanje" teksta prema novoj brojčanoj vrijednosti. */
 export function tween(el, to, format, ms = 500) {
   const from = +el.dataset.v || 0;
