@@ -17,7 +17,7 @@ export default {
     logo: 'https://emso.hr/files/2024/02/SIMBOL.webp',
     logoSquare: 'https://emso.hr/files/2024/11/EMSO-Logo_Local-SEO.png',
     heroVideo: 'https://emso.hr/files/2024/04/EMSO-Solarna-elektrana-snage-360-kWp-AluK-Tim.mp4',
-    heroPoster: 'https://emso.hr/files/2024/03/413490017_261016096835363_2470602542074789762_n.jpg',
+    heroPoster: 'https://emso.hr/files/2024/04/EMSO-Solarna-Elektrana-20-kWp-Zadar_1.webp',
     files: 'https://emso.hr/files/2024',
   },
 

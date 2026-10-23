@@ -65,16 +65,25 @@ if ('IntersectionObserver' in window && !reduceMotion) {
 }
 
 /* ---------- Video u heroju ---------- */
-// Učitava se tek nakon učitavanja stranice, ne uz smanjeno kretanje ni uštedu podataka.
+// Na većim ekranima kreće nakon učitavanja stranice, a na mobitelu na prvi dodir ili skrol
+// (štedi mobilne podatke i procesor). Ne pokreće se uz smanjeno kretanje ni uštedu podataka.
 const heroVideo = $('[data-hero-video]');
 if (heroVideo && !reduceMotion && !navigator.connection?.saveData) {
+  let started = false;
   const startHero = () => {
+    if (started) return;
+    started = true;
     heroVideo.src = heroVideo.dataset.src;
     heroVideo.addEventListener('playing', () => heroVideo.classList.add('is-playing'), { once: true });
     heroVideo.play().catch(() => {});
   };
-  if (document.readyState === 'complete') idle(startHero);
-  else addEventListener('load', () => idle(startHero), { once: true });
+  if (matchMedia('(min-width: 768px)').matches) {
+    if (document.readyState === 'complete') idle(startHero);
+    else addEventListener('load', () => idle(startHero), { once: true });
+  } else {
+    const opts = { once: true, passive: true };
+    ['touchstart', 'pointerdown', 'scroll', 'keydown'].forEach((ev) => addEventListener(ev, startHero, opts));
+  }
 }
 
 /* ---------- Videi referenci: učitaj kad se približe, puštaj samo dok su vidljivi ---------- */
