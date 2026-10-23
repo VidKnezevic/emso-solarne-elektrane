@@ -209,6 +209,8 @@ h1, h2, h3, h4 { color: var(--navy); font-weight: 700; text-wrap: balance; }
 @media (max-width: 1100px) {
   .burger { display: block; }
   .hdr__btn { display: none; }
+  /* Navigacija je ovdje fiksni padajući izbornik pa više ne gura ikonice udesno. */
+  .hdr__cta { margin-left: auto; gap: 8px; }
   .hdr__phone { width: 44px; height: 44px; justify-content: center; border: 1px solid var(--line-2); border-radius: var(--r); }
   .nav {
     position: fixed; left: 0; right: 0; top: var(--hdr); bottom: 0;
