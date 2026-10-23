@@ -224,6 +224,13 @@ if (root) {
 
   recompute();
 
+  // Animacije tokova rade samo dok je simulacija na ekranu.
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => section.classList.toggle('is-live', entries[0].isIntersecting)).observe(root);
+  } else {
+    section.classList.add('is-live');
+  }
+
   // Automatski pokreni kad je sekcija vidljiva (osim uz smanjeno kretanje).
   if (!reduceMotion && 'IntersectionObserver' in window) {
     let started = false;

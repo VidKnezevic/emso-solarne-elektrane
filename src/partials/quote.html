@@ -16,7 +16,7 @@
       </div>
     </div>
 
-    <form class="wizard card-glass" data-wizard data-endpoint="{{formEndpoint}}" data-email="{{c.email}}" action="mailto:{{c.email}}" method="post" enctype="text/plain" novalidate>
+    <form class="wizard card-glass" data-wizard data-endpoint="{{formEndpoint}}" data-email="{{c.email}}" novalidate>
       <div class="wizard__progress" aria-hidden="true"><span data-wizard-bar></span></div>
       <p class="wizard__step-label" data-wizard-label aria-live="polite">Korak 1 od 4</p>
 
@@ -96,6 +96,7 @@
         <button type="submit" class="btn btn--sun" data-wizard-submit>Pošalji upit<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></button>
       </div>
       <p class="wizard__error" data-wizard-error role="alert"></p>
+      <noscript><p class="wizard__error">Za slanje upita uključite JavaScript ili nam pišite na <a href="mailto:{{c.email}}">{{c.email}}</a>.</p></noscript>
 
       <div class="wizard__done" data-wizard-done hidden>
         <div class="wizard__done-ico"><svg width="34" height="34" aria-hidden="true"><use href="#i-check"/></svg></div>
