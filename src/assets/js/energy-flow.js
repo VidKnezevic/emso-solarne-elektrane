@@ -76,7 +76,6 @@ function initFlow() {
   const lines = Object.fromEntries($$('[data-line]', svg).map((p) => [p.dataset.line, p]));
   const val = (k) => $(`[data-v="${k}"]`, svg);
   const socBar = $('[data-soc-bar]', svg);
-  const sun = $('[data-sun]', svg);
   const timeInput = $('[data-time]', root);
   const playBtn = $('[data-play]', root);
   const chart = $('[data-daychart]', root);
@@ -120,15 +119,15 @@ function initFlow() {
   }
 
   function insightText(s, hasBatt) {
-    if (s.evSolar > 0.05) return 'Auto se puni viškom sunčeve energije – praktički besplatno.';
-    if (s.P > 0.05 && s.batt > 0.05) return 'Elektrana proizvodi više nego što kuća troši – višak puni bateriju za večer.';
+    if (s.evSolar > 0.05) return 'Auto se puni viškom sunčeve energije, praktički besplatno.';
+    if (s.P > 0.05 && s.batt > 0.05) return 'Elektrana proizvodi više nego što kuća troši, a višak puni bateriju za večer.';
     if (s.P > 0.05 && s.grid < -0.05) return hasBatt ? 'Baterija je puna, pa višak odlazi u mrežu po otkupnoj cijeni.' : 'Višak odlazi u mrežu. S baterijom biste ga sačuvali za večer.';
-    if (s.P > 0.05 && s.batt < -0.05) return 'Sunce je još nisko – razliku do potrošnje kuće pokriva baterija.';
-    if (s.P > 0.05 && s.grid > 0.05) return 'Proizvodnja još ne pokriva svu potrošnju – razliku dopunjuje mreža.';
+    if (s.P > 0.05 && s.batt < -0.05) return 'Sunce je još nisko pa razliku do potrošnje kuće pokriva baterija.';
+    if (s.P > 0.05 && s.grid > 0.05) return 'Proizvodnja još ne pokriva svu potrošnju pa razliku dopunjuje mreža.';
     if (s.P > 0.05) return 'Elektrana trenutno pokriva cijelu potrošnju kuće.';
-    if (s.batt < -0.05) return 'Sunce je zašlo – kuću napaja baterija napunjena tijekom dana.';
+    if (s.batt < -0.05) return 'Sunce je zašlo, a kuću napaja baterija napunjena tijekom dana.';
     if (s.ev > 0.05 && s.grid > 0.05) return 'Auto se dopunjuje iz mreže po noćnoj tarifi.';
-    if (hasBatt && s.grid > 0.05) return 'Baterija je ispražnjena – ostatak potrošnje dolazi iz mreže.';
+    if (hasBatt && s.grid > 0.05) return 'Baterija je ispražnjena pa ostatak potrošnje dolazi iz mreže.';
     return 'Noću struju preuzimate iz mreže. Baterija bi pokrila večernju potrošnju.';
   }
 
@@ -141,11 +140,10 @@ function initFlow() {
     const hasBatt = section.classList.contains('has-batt');
     const soc = day.pts.map((p, i) => `${i ? 'L' : 'M'}${X(i).toFixed(1)} ${(116 - p.soc * 108).toFixed(1)}`).join(' ');
     chart.innerHTML = `
-      <defs><linearGradient id="dcSun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB020" stop-opacity=".9"/><stop offset="1" stop-color="#FF7A1A" stop-opacity=".15"/></linearGradient></defs>
-      <path d="${area}" fill="url(#dcSun)"/>
-      <path d="${load}" fill="none" stroke="#5CCBFF" stroke-width="2" vector-effect="non-scaling-stroke"/>
-      ${hasBatt ? `<path d="${soc}" fill="none" stroke="#3DDC97" stroke-width="1.6" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>` : ''}
-      <line data-cursor x1="0" x2="0" y1="0" y2="116" stroke="#fff" stroke-width="1.5" vector-effect="non-scaling-stroke" opacity=".8"/>`;
+      <path d="${area}" fill="#00A0E3" fill-opacity=".22" stroke="#00A0E3" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+      <path d="${load}" fill="none" stroke="#0A2344" stroke-width="2" vector-effect="non-scaling-stroke"/>
+      ${hasBatt ? `<path d="${soc}" fill="none" stroke="#1C8C50" stroke-width="1.6" stroke-dasharray="4 4" vector-effect="non-scaling-stroke"/>` : ''}
+      <line data-cursor x1="0" x2="0" y1="0" y2="116" stroke="#0068B5" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`;
     const t = day.tot;
     stat('prod').textContent = `${n1(t.prod)} kWh`;
     stat('autarky').textContent = `${n0(Math.max(0, (1 - t.imp / t.cons) * 100))} %`;
@@ -170,8 +168,6 @@ function initFlow() {
     socBar.setAttribute('width', hasBatt ? String(100 * s.soc) : '0');
     val('grid').textContent = kw(s.grid);
     val('gridLabel').textContent = compact.matches ? 'Mreža' : s.grid < -0.05 ? 'Mreža · predaja' : s.grid > 0.05 ? 'Mreža · preuzimanje' : 'Mreža';
-    const peak = KWP * SEASONS[currentSeason()].peak;
-    sun.style.opacity = String(0.15 + 0.85 * Math.min(1, s.P / peak));
     const h = Math.floor(s.t);
     const m = Math.round((s.t - h) * 60);
     clock.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;

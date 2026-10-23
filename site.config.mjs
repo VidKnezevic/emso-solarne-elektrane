@@ -5,11 +5,21 @@ export default {
   siteName: 'EMSO e-mobility solutions',
   locale: 'hr_HR',
   lang: 'hr',
-  themeColor: '#020A18',
+  themeColor: '#FFFFFF',
 
   // Ako se postavi (npr. Formspree / Web3Forms / vlastiti CRM endpoint), obrazac za ponudu
   // šalje JSON POST na ovu adresu. Ako je prazno, otvara se e-mail klijent s ispunjenim upitom.
   formEndpoint: '',
+
+  // Mediji s emso.hr (EMSO-ovi vlastiti logo, video i fotografije). Za produkciju ih kopirajte
+  // u src/assets/ i ovdje upišite lokalne putanje.
+  media: {
+    logo: 'https://emso.hr/files/2024/02/SIMBOL.webp',
+    logoSquare: 'https://emso.hr/files/2024/11/EMSO-Logo_Local-SEO.png',
+    heroVideo: 'https://emso.hr/files/2024/04/EMSO-Solarna-elektrana-snage-360-kWp-AluK-Tim.mp4',
+    heroPoster: 'https://emso.hr/files/2024/03/413490017_261016096835363_2470602542074789762_n.jpg',
+    files: 'https://emso.hr/files/2024',
+  },
 
   company: {
     name: 'EMSO e-mobility solutions',

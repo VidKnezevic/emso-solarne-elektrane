@@ -32,6 +32,7 @@ const globals = {
   formEndpoint: config.formEndpoint,
   robots: NOINDEX ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
   ...Object.fromEntries(Object.entries(c).map(([k, v]) => ['c.' + k, v])),
+  ...Object.fromEntries(Object.entries(config.media).map(([k, v]) => ['m.' + k, v])),
 };
 
 async function readPartials() {

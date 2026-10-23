@@ -179,7 +179,7 @@ function initCalc() {
     const ih = H - PAD.t - PAD.b;
     const bw = iw / 12;
     const y = (v) => PAD.t + ih - (v / max) * ih;
-    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gSun" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB020"/><stop offset="1" stop-color="#FF7A1A"/></linearGradient></defs>`;
+    let s = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">`;
     for (let i = 0; i <= 4; i++) {
       const v = (max / 4) * i;
       s += `<line x1="${PAD.l}" x2="${W - PAD.r}" y1="${y(v)}" y2="${y(v)}" stroke="#E7ECF2"/><text x="${PAD.l - 8}" y="${y(v) + 4}" text-anchor="end">${n0(v)}</text>`;
@@ -187,16 +187,16 @@ function initCalc() {
     r.months.forEach((m, i) => {
       const x = PAD.l + i * bw;
       const w = bw * 0.34;
-      s += `<rect x="${x + bw * 0.14}" y="${y(m.cons)}" width="${w}" height="${y(0) - y(m.cons)}" rx="3" fill="#B9C4D6"><title>${MONTHS[i]}: potrošnja ${n0(m.cons)} kWh</title></rect>`;
-      s += `<rect x="${x + bw * 0.52}" y="${y(m.prod)}" width="${w}" height="${y(0) - y(m.prod)}" rx="3" fill="url(#gSun)"><title>${MONTHS[i]}: proizvodnja ${n0(m.prod)} kWh</title></rect>`;
-      s += `<rect x="${x + bw * 0.52}" y="${y(m.self)}" width="${w}" height="${y(0) - y(m.self)}" rx="3" fill="#0A2344" opacity=".28"/>`;
+      s += `<rect x="${x + bw * 0.14}" y="${y(m.cons)}" width="${w}" height="${y(0) - y(m.cons)}" rx="3" fill="#CBD5E1"><title>${MONTHS[i]}: potrošnja ${n0(m.cons)} kWh</title></rect>`;
+      s += `<rect x="${x + bw * 0.52}" y="${y(m.prod)}" width="${w}" height="${y(0) - y(m.prod)}" rx="3" fill="#00A0E3"><title>${MONTHS[i]}: proizvodnja ${n0(m.prod)} kWh</title></rect>`;
+      s += `<rect x="${x + bw * 0.52}" y="${y(m.self)}" width="${w}" height="${y(0) - y(m.self)}" rx="3" fill="#0068B5"/>`;
       s += `<text x="${x + bw / 2}" y="${H - 8}" text-anchor="middle">${MONTHS[i]}</text>`;
     });
     s += `<text x="${PAD.l - 8}" y="${PAD.t - 2}" text-anchor="end">kWh</text></svg>`;
     chartBox.innerHTML = s;
     chartBox.setAttribute('aria-label', `Mjesečna proizvodnja i potrošnja. Godišnje: proizvodnja ${n0(r.prodYear)} kWh, potrošnja ${n0(r.consYear)} kWh.`);
     legend.innerHTML =
-      '<li><i style="background:#B9C4D6"></i>Potrošnja</li><li><i style="background:linear-gradient(#FFB020,#FF7A1A)"></i>Proizvodnja</li><li><i style="background:#A9B3C2"></i>Od toga potrošeno odmah / iz baterije</li>';
+      '<li><i style="background:#CBD5E1"></i>Potrošnja</li><li><i style="background:#00A0E3"></i>Proizvodnja</li><li><i style="background:#0068B5"></i>Od toga potrošeno u kući</li>';
     chartTitle.textContent = 'Proizvodnja i potrošnja po mjesecima';
   }
 
@@ -216,19 +216,19 @@ function initCalc() {
       const x = PAD.l + i * bw + bw * 0.18;
       const top = Math.min(y(v), y(0));
       const h = Math.max(1, Math.abs(y(v) - y(0)));
-      s += `<rect x="${x}" y="${top}" width="${bw * 0.64}" height="${h}" rx="2" fill="${v < 0 ? '#C9D3E1' : '#FFB020'}"><title>${i}. godina: ${eur(v)}</title></rect>`;
+      s += `<rect x="${x}" y="${top}" width="${bw * 0.64}" height="${h}" rx="2" fill="${v < 0 ? '#CBD5E1' : '#0068B5'}"><title>${i}. godina: ${eur(v)}</title></rect>`;
       if (i % 5 === 0) s += `<text x="${x + bw * 0.32}" y="${H - 8}" text-anchor="middle">${i}.</text>`;
     });
     if (r.payback !== null) {
       const px = PAD.l + (r.payback + 0.5) * bw;
       s += `<line x1="${px}" x2="${px}" y1="${PAD.t}" y2="${y(minV)}" stroke="#0A2344" stroke-dasharray="4 4"/>`;
       const anchor = px > W * 0.75 ? 'end' : 'start';
-      s += `<text x="${px + (anchor === 'start' ? 8 : -8)}" y="${PAD.t + 12}" text-anchor="${anchor}" style="fill:#0A1A33;font-weight:700">Povrat za ${n1(r.payback)} god.</text>`;
+      s += `<text x="${px + (anchor === 'start' ? 8 : -8)}" y="${PAD.t + 12}" text-anchor="${anchor}" style="fill:#0A2344;font-weight:700">Povrat za ${n1(r.payback)} god.</text>`;
     }
     s += `<text x="${W - PAD.r}" y="${H - 8}" text-anchor="end">god.</text></svg>`;
     chartBox.innerHTML = s;
     chartBox.setAttribute('aria-label', `Kumulativna ušteda kroz 25 godina. Povrat investicije: ${yrs(r.payback)}. Neto ušteda nakon 25 godina: ${eur(r.profit25)}.`);
-    legend.innerHTML = '<li><i style="background:#C9D3E1"></i>Investicija još se otplaćuje</li><li><i style="background:#FFB020"></i>Čista ušteda</li>';
+    legend.innerHTML = '<li><i style="background:#CBD5E1"></i>Investicija se otplaćuje</li><li><i style="background:#0068B5"></i>Neto ušteda</li>';
     chartTitle.textContent = 'Kumulativna ušteda kroz 25 godina (€)';
   }
 

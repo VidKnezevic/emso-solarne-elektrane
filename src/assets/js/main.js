@@ -1,5 +1,5 @@
-// Zajedničko ponašanje svih stranica: zaglavlje, izbornik, animacije, brojači i obrazac za ponudu.
-import { $, $$, n0, reduceMotion, fillRange, idle, whenNear } from './lib.js';
+// Zajedničko ponašanje svih stranica: zaglavlje, izbornik, animacije, videi i obrazac za ponudu.
+import { $, $$, reduceMotion, fillRange, idle, whenNear } from './lib.js';
 
 const html = document.documentElement;
 
@@ -64,54 +64,39 @@ if ('IntersectionObserver' in window && !reduceMotion) {
   revealEls.forEach((el) => el.classList.add('is-in'));
 }
 
-/* ---------- Brojači ---------- */
-const counters = $$('.stat [data-count], .keyfacts [data-count]');
-const runCounter = (el) => {
-  const to = +el.dataset.count;
-  if (reduceMotion) return;
-  const t0 = performance.now();
-  const ms = 1600;
-  const tick = (t) => {
-    const k = Math.min(1, (t - t0) / ms);
-    el.textContent = n0(to * (1 - Math.pow(1 - k, 4)));
-    if (k < 1) requestAnimationFrame(tick);
+/* ---------- Video u heroju ---------- */
+// Učitava se tek nakon učitavanja stranice, ne uz smanjeno kretanje ni uštedu podataka.
+const heroVideo = $('[data-hero-video]');
+if (heroVideo && !reduceMotion && !navigator.connection?.saveData) {
+  const startHero = () => {
+    heroVideo.src = heroVideo.dataset.src;
+    heroVideo.addEventListener('playing', () => heroVideo.classList.add('is-playing'), { once: true });
+    heroVideo.play().catch(() => {});
   };
-  requestAnimationFrame(tick);
-};
-if ('IntersectionObserver' in window) {
-  const co = new IntersectionObserver(
+  if (document.readyState === 'complete') idle(startHero);
+  else addEventListener('load', () => idle(startHero), { once: true });
+}
+
+/* ---------- Videi referenci: učitaj kad se približe, puštaj samo dok su vidljivi ---------- */
+const lazyVideos = $$('[data-lazy-video]');
+if (lazyVideos.length && 'IntersectionObserver' in window) {
+  const vo = new IntersectionObserver(
     (entries) => {
-      entries.forEach((en) => {
-        if (en.isIntersecting) {
-          runCounter(en.target);
-          co.unobserve(en.target);
+      entries.forEach(({ target: v, isIntersecting }) => {
+        if (isIntersecting) {
+          if (!v.src) {
+            v.preload = 'metadata';
+            v.src = v.dataset.src + '#t=0.5';
+          }
+          if (!reduceMotion) v.play().catch(() => {});
+        } else if (!v.paused) {
+          v.pause();
         }
       });
     },
-    { threshold: 0.6 }
+    { threshold: 0.25 }
   );
-  observeLazily(counters, co);
-}
-
-/* ---------- Beskonačna traka partnera ---------- */
-idle(() => $$('[data-marquee] .marquee__track').forEach((track) => {
-  [...track.children].forEach((li) => {
-    const clone = li.cloneNode(true);
-    clone.setAttribute('aria-hidden', 'true');
-    track.appendChild(clone);
-  });
-}));
-
-/* ---------- Mjerač u ilustraciji aplikacije ---------- */
-const arc = $('[data-app-arc]');
-if (arc && 'IntersectionObserver' in window) {
-  const ao = new IntersectionObserver((entries) => {
-    if (entries[0].isIntersecting) {
-      arc.style.strokeDashoffset = '24';
-      ao.disconnect();
-    }
-  });
-  observeLazily([arc], ao);
+  observeLazily(lazyVideos, vo);
 }
 
 /* ---------- Aktivna stavka sadržaja vodiča ---------- */

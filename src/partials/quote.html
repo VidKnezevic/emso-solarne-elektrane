@@ -1,32 +1,32 @@
-<section class="section section--dark quote" id="ponuda" aria-labelledby="ponuda-title">
-  <div class="quote__glow" aria-hidden="true"></div>
+<section class="section section--sky quote" id="ponuda" aria-labelledby="ponuda-title">
   <div class="container quote__grid">
     <div class="quote__intro">
-      <p class="eyebrow eyebrow--light">Besplatna ponuda</p>
-      <h2 class="h2" id="ponuda-title">Ponuda po mjeri <em>u 60 sekundi</em>.</h2>
-      <p class="lead lead--light">Odgovorite na nekoliko pitanja i naš stručnjak pripremit će vam ponudu prilagođenu vašem krovu, potrošnji i planovima. Bez obveze.</p>
-      <ul class="ticks ticks--light">
-        <li><svg width="20" height="20" aria-hidden="true"><use href="#i-check"/></svg>Savjetovanje i izrada ponude – besplatno</li>
-        <li><svg width="20" height="20" aria-hidden="true"><use href="#i-check"/></svg>Projekt, HEP dokumentacija i montaža na jednom mjestu</li>
-        <li><svg width="20" height="20" aria-hidden="true"><use href="#i-check"/></svg>Vlastiti ovlašteni instalateri i mehanizacija</li>
+      <span class="label">Besplatna ponuda</span>
+      <h2 class="h2" id="ponuda-title">Zatražite ponudu</h2>
+      <p class="lead">Odgovorite na nekoliko pitanja o objektu i potrošnji. Na temelju toga pripremamo prijedlog rješenja i ponudu, bez ikakve obveze.</p>
+      <ul class="ticks">
+        <li><svg width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Savjetovanje i izrada ponude su besplatni</li>
+        <li><svg width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Projekt, HEP dokumentacija i montaža na jednom mjestu</li>
+        <li><svg width="18" height="18" aria-hidden="true"><use href="#i-check"/></svg>Vlastiti instalateri, oprema i mehanizacija</li>
       </ul>
       <div class="quote__direct">
-        <span>Radije biste razgovarali?</span>
+        <span>Radije biste razgovarali? Nazovite nas.</span>
         <a href="tel:{{c.phoneHref}}">{{c.phone}}</a>
+        <span>{{c.hours}}</span>
       </div>
     </div>
 
-    <form class="wizard card-glass" data-wizard data-endpoint="{{formEndpoint}}" data-email="{{c.email}}" novalidate>
+    <form class="wizard card" data-wizard data-endpoint="{{formEndpoint}}" data-email="{{c.email}}" novalidate>
       <div class="wizard__progress" aria-hidden="true"><span data-wizard-bar></span></div>
       <p class="wizard__step-label" data-wizard-label aria-live="polite">Korak 1 od 4</p>
 
       <fieldset class="wizard__step" data-step="1">
         <legend class="wizard__q">Što vas zanima?</legend>
         <div class="choices choices--cards">
-          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana" checked><span><svg width="22" height="22" aria-hidden="true"><use href="#i-panel"/></svg>Solarna elektrana</span></label>
-          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana + baterija"><span><svg width="22" height="22" aria-hidden="true"><use href="#i-battery"/></svg>Elektrana + baterija</span></label>
-          <label class="choice"><input type="radio" name="interes" value="Punionica za električni automobil"><span><svg width="22" height="22" aria-hidden="true"><use href="#i-plug"/></svg>Punionica za auto</span></label>
-          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana + punionica"><span><svg width="22" height="22" aria-hidden="true"><use href="#i-car"/></svg>Elektrana + punionica</span></label>
+          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana" checked><span><svg width="20" height="20" aria-hidden="true"><use href="#i-panel"/></svg>Solarna elektrana</span></label>
+          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana + baterija"><span><svg width="20" height="20" aria-hidden="true"><use href="#i-battery"/></svg>Elektrana s baterijom</span></label>
+          <label class="choice"><input type="radio" name="interes" value="Punionica za električni automobil"><span><svg width="20" height="20" aria-hidden="true"><use href="#i-plug"/></svg>Punionica za vozilo</span></label>
+          <label class="choice"><input type="radio" name="interes" value="Solarna elektrana + punionica"><span><svg width="20" height="20" aria-hidden="true"><use href="#i-car"/></svg>Elektrana i punionica</span></label>
         </div>
       </fieldset>
 
@@ -42,9 +42,9 @@
         <p class="wizard__sub">Vrsta krova</p>
         <div class="choices">
           <label class="choice choice--pill"><input type="radio" name="krov" value="Crijep" checked><span>Crijep</span></label>
-          <label class="choice choice--pill"><input type="radio" name="krov" value="Lim / sendvič panel"><span>Lim / sendvič</span></label>
+          <label class="choice choice--pill"><input type="radio" name="krov" value="Lim / sendvič panel"><span>Lim ili sendvič panel</span></label>
           <label class="choice choice--pill"><input type="radio" name="krov" value="Ravni krov"><span>Ravni krov</span></label>
-          <label class="choice choice--pill"><input type="radio" name="krov" value="Nije krov / tlo / nadstrešnica"><span>Tlo / nadstrešnica</span></label>
+          <label class="choice choice--pill"><input type="radio" name="krov" value="Nije krov / tlo / nadstrešnica"><span>Tlo ili nadstrešnica</span></label>
           <label class="choice choice--pill"><input type="radio" name="krov" value="Nisam siguran/na"><span>Nisam siguran/na</span></label>
         </div>
       </fieldset>
@@ -62,14 +62,14 @@
           </label>
         </div>
         <label class="field">
-          <span>Napomena (nije obavezno)</span>
-          <textarea name="napomena" rows="3" placeholder="npr. planiramo dizalicu topline, krov je okrenut prema jugu…"></textarea>
+          <span>Napomena</span>
+          <textarea name="napomena" rows="3" placeholder="npr. planiramo dizalicu topline, krov je okrenut prema jugu"></textarea>
         </label>
         <input type="hidden" name="izracun" value="" data-calc-summary>
       </fieldset>
 
       <fieldset class="wizard__step" data-step="4">
-        <legend class="wizard__q">Kome šaljemo ponudu?</legend>
+        <legend class="wizard__q">Vaši kontakt podaci</legend>
         <label class="field">
           <span>Ime i prezime *</span>
           <input type="text" name="ime" autocomplete="name" required>
@@ -91,16 +91,16 @@
       </fieldset>
 
       <div class="wizard__nav">
-        <button type="button" class="btn btn--ghost" data-wizard-prev>Natrag</button>
-        <button type="button" class="btn btn--sun" data-wizard-next>Dalje<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></button>
-        <button type="submit" class="btn btn--sun" data-wizard-submit>Pošalji upit<svg width="18" height="18" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+        <button type="button" class="btn btn--outline" data-wizard-prev>Natrag</button>
+        <button type="button" class="btn btn--primary" data-wizard-next>Dalje</button>
+        <button type="submit" class="btn btn--primary" data-wizard-submit>Pošalji upit</button>
       </div>
       <p class="wizard__error" data-wizard-error role="alert"></p>
       <noscript><p class="wizard__error">Za slanje upita uključite JavaScript ili nam pišite na <a href="mailto:{{c.email}}">{{c.email}}</a>.</p></noscript>
 
       <div class="wizard__done" data-wizard-done hidden>
-        <div class="wizard__done-ico"><svg width="34" height="34" aria-hidden="true"><use href="#i-check"/></svg></div>
-        <p class="wizard__q">Hvala, upit je spreman!</p>
+        <div class="wizard__done-ico"><svg width="30" height="30" aria-hidden="true"><use href="#i-check"/></svg></div>
+        <p class="wizard__q">Hvala na upitu</p>
         <p data-wizard-done-text>Javit ćemo vam se u najkraćem roku s prijedlogom rješenja i ponudom.</p>
       </div>
     </form>

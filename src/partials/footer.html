@@ -1,45 +1,10 @@
 <footer class="ftr" id="kontakt">
   <div class="container">
-    <div class="ftr__cta">
-      <div>
-        <p class="eyebrow eyebrow--light">Kontakt</p>
-        <h2 class="ftr__title">Nazovite za <em>besplatan savjet</em>.</h2>
-        <p class="ftr__lead">Savjetovanje i izrada ponude su besplatni. Recite nam što trebate – mi ćemo izračunati, projektirati, opremiti i montirati.</p>
-      </div>
-      <ul class="ftr__contacts">
-        <li>
-          <a href="tel:{{c.phoneHref}}" class="ftr__contact">
-            <span class="ftr__ico"><svg width="22" height="22" aria-hidden="true"><use href="#i-phone"/></svg></span>
-            <span><small>Telefon</small><strong>{{c.phone}}</strong></span>
-          </a>
-        </li>
-        <li>
-          <a href="tel:{{c.mobileHref}}" class="ftr__contact">
-            <span class="ftr__ico"><svg width="22" height="22" aria-hidden="true"><use href="#i-phone"/></svg></span>
-            <span><small>Mobitel</small><strong>{{c.mobile}}</strong></span>
-          </a>
-        </li>
-        <li>
-          <a href="mailto:{{c.email}}" class="ftr__contact">
-            <span class="ftr__ico"><svg width="22" height="22" aria-hidden="true"><use href="#i-mail"/></svg></span>
-            <span><small>E-mail</small><strong>{{c.email}}</strong></span>
-          </a>
-        </li>
-        <li>
-          <a href="{{c.maps}}" class="ftr__contact" target="_blank" rel="noopener">
-            <span class="ftr__ico"><svg width="22" height="22" aria-hidden="true"><use href="#i-pin"/></svg></span>
-            <span><small>Solar Shop i ured</small><strong>{{c.street}}, {{c.postalCode}} {{c.city}}</strong></span>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div class="ftr__grid">
+    <div class="ftr__top">
       <div class="ftr__brand">
-        <a class="logo logo--light" href="{{base}}" aria-label="EMSO – naslovna">
-          <svg class="logo__mark" width="38" height="38" aria-hidden="true"><use href="#logo-mark"/></svg>
-          <span class="logo__word">EMSO</span>
-          <span class="logo__sub">e-mobility<br>solutions</span>
+        <a class="logo" href="{{base}}" aria-label="EMSO, naslovna">
+          <img class="logo__mark" src="{{m.logo}}" width="91" height="87" alt="" referrerpolicy="no-referrer" loading="lazy" decoding="async">
+          <span class="logo__text"><span class="logo__word">EMSO</span><span class="logo__sub">e-mobility solutions</span></span>
         </a>
         <address class="ftr__address">
           <strong>{{c.legalName}}</strong><br>
@@ -47,10 +12,16 @@
           OIB: {{c.oib}}<br>
           Radno vrijeme: {{c.hours}}
         </address>
+        <ul class="ftr__contacts">
+          <li><a href="tel:{{c.phoneHref}}"><svg width="16" height="16" aria-hidden="true"><use href="#i-phone"/></svg>{{c.phone}}</a></li>
+          <li><a href="tel:{{c.mobileHref}}"><svg width="16" height="16" aria-hidden="true"><use href="#i-phone"/></svg>{{c.mobile}}</a></li>
+          <li><a href="mailto:{{c.email}}"><svg width="16" height="16" aria-hidden="true"><use href="#i-mail"/></svg>{{c.email}}</a></li>
+          <li><a href="{{c.maps}}" target="_blank" rel="noopener"><svg width="16" height="16" aria-hidden="true"><use href="#i-pin"/></svg>Karta i upute</a></li>
+        </ul>
         <ul class="ftr__social" aria-label="Društvene mreže">
-          <li><a href="{{c.facebook}}" target="_blank" rel="noopener" aria-label="EMSO na Facebooku"><svg width="20" height="20" aria-hidden="true"><use href="#i-fb"/></svg></a></li>
-          <li><a href="{{c.instagram}}" target="_blank" rel="noopener" aria-label="EMSO na Instagramu"><svg width="20" height="20" aria-hidden="true"><use href="#i-ig"/></svg></a></li>
-          <li><a href="{{c.youtube}}" target="_blank" rel="noopener" aria-label="EMSO na YouTubeu"><svg width="20" height="20" aria-hidden="true"><use href="#i-yt"/></svg></a></li>
+          <li><a href="{{c.facebook}}" target="_blank" rel="noopener" aria-label="EMSO na Facebooku"><svg width="18" height="18" aria-hidden="true"><use href="#i-fb"/></svg></a></li>
+          <li><a href="{{c.instagram}}" target="_blank" rel="noopener" aria-label="EMSO na Instagramu"><svg width="18" height="18" aria-hidden="true"><use href="#i-ig"/></svg></a></li>
+          <li><a href="{{c.youtube}}" target="_blank" rel="noopener" aria-label="EMSO na YouTubeu"><svg width="18" height="18" aria-hidden="true"><use href="#i-yt"/></svg></a></li>
         </ul>
       </div>
       <nav class="ftr__col" aria-label="Usluge">
@@ -59,7 +30,7 @@
           <li><a href="{{base}}">Solarne elektrane za kuće</a></li>
           <li><a href="{{home}}#tvrtke">Solarne elektrane za tvrtke</a></li>
           <li><a href="{{home}}#kalkulator">Kalkulator uštede</a></li>
-          <li><a href="{{base}}elektro-punionice/">Punionice za električna vozila</a></li>
+          <li><a href="{{base}}elektro-punionice/">Elektro punionice</a></li>
           <li><a href="{{base}}poticaji-za-solarne-elektrane-2026/">Poticaji FZOEU 2026.</a></li>
         </ul>
       </nav>
@@ -76,14 +47,13 @@
       <nav class="ftr__col" aria-label="EMSO Plus">
         <p class="ftr__h">EMSO Plus+</p>
         <ul>
-          <li><a href="https://shop.emso.hr/trgovina/">e-Trgovina – Solar Shop</a></li>
+          <li><a href="https://shop.emso.hr/trgovina/">e-Trgovina, Solar Shop</a></li>
           <li><a href="https://shop.emso.hr/kategorija/solarni-paneli/">Solarni paneli</a></li>
           <li><a href="https://shop.emso.hr/kategorija/solarno-grijanje/">Solarno grijanje</a></li>
           <li><a href="https://osiguranje.emso.hr/">Osiguranje solarnih elektrana</a></li>
         </ul>
       </nav>
     </div>
-
     <div class="ftr__bottom">
       <p>© {{year}} {{c.legalName}} Sva prava pridržana.</p>
       <ul>
@@ -97,9 +67,9 @@
 </footer>
 
 <nav class="mbar" aria-label="Brzi kontakt">
-  <a href="tel:{{c.phoneHref}}" class="mbar__btn"><svg width="20" height="20" aria-hidden="true"><use href="#i-phone"/></svg>Nazovi</a>
-  <a href="https://wa.me/{{c.whatsapp}}" class="mbar__btn" target="_blank" rel="noopener"><svg width="20" height="20" aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>
-  <a href="#ponuda" class="mbar__btn mbar__btn--sun"><svg width="20" height="20" aria-hidden="true"><use href="#i-doc"/></svg>Ponuda</a>
+  <a href="tel:{{c.phoneHref}}" class="mbar__btn"><svg width="18" height="18" aria-hidden="true"><use href="#i-phone"/></svg>Nazovi</a>
+  <a href="https://wa.me/{{c.whatsapp}}" class="mbar__btn" target="_blank" rel="noopener"><svg width="18" height="18" aria-hidden="true"><use href="#i-whatsapp"/></svg>WhatsApp</a>
+  <a href="#ponuda" class="mbar__btn mbar__btn--primary">Zatražite ponudu</a>
 </nav>
 <a class="wa-fab" href="https://wa.me/{{c.whatsapp}}" target="_blank" rel="noopener" aria-label="Pišite nam na WhatsApp">
   <svg width="26" height="26" aria-hidden="true"><use href="#i-whatsapp"/></svg>

@@ -14,13 +14,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FONTS = os.path.join(ROOT, "src", "assets", "fonts")
 OUT = os.path.join(ROOT, "src", "assets", "img")
 
-NAVY_950 = (2, 10, 24)
-NAVY_900 = (5, 21, 48)
+NAVY = (10, 35, 68)
+BLUE = (0, 104, 181)
 CYAN = (0, 160, 227)
-SUN = (255, 176, 32)
-SUN_300 = (255, 210, 122)
+SKY = (238, 245, 251)
+SKY_2 = (220, 235, 247)
 WHITE = (255, 255, 255)
-MUTED = (184, 192, 205)
+MUTED = (88, 101, 121)
 
 
 # ---------- fontovi (woff2 → TTF u memoriji, latin + latin-ext) ----------
@@ -33,8 +33,7 @@ def load_ttf(name):
     return buf.getvalue(), cmap
 
 
-SANS = [load_ttf("inter-tight-latin-wght-normal.woff2"), load_ttf("inter-tight-latin-ext-wght-normal.woff2")]
-SERIF = [load_ttf("instrument-serif-latin-400-italic.woff2"), load_ttf("instrument-serif-latin-ext-400-italic.woff2")]
+SANS = [load_ttf("montserrat-latin-wght-normal.woff2"), load_ttf("montserrat-latin-ext-wght-normal.woff2")]
 
 
 def make_fonts(family, size, weight=None):
@@ -68,159 +67,79 @@ def measure(s, fonts, tracking=0.0):
 
 
 # ---------- grafički elementi ----------
-def logo_mark(size, bg=None, pad=0.0):
-    """EMSO znak: krug s izlazećim suncem i panelima (crtano 4× pa smanjeno)."""
+def icon(size, pad=0.0, radius=0.18):
+    """Ikona: tamnoplavi kvadrat sa slovom „e“ (rezervna ikona; na stranici se koristi EMSO logo)."""
     S = size * 4
-    im = Image.new("RGBA", (S, S), bg + (255,) if bg else (0, 0, 0, 0))
+    im = Image.new("RGBA", (S, S), (0, 0, 0, 0))
     d = ImageDraw.Draw(im)
-    p = S * pad
-    r = (S - 2 * p) / 2
-    cx = cy = S / 2
-    k = (2 * r) / 40  # viewBox 40×40
-    ox, oy = cx - r, cy - r
-    d.ellipse([ox, oy, ox + 2 * r, oy + 2 * r], fill=CYAN)
-    # polukrug sunca
-    d.pieslice([ox + 10.5 * k, oy + 15.5 * k, ox + 29.5 * k, oy + 34.5 * k], 180, 360, fill=WHITE)
-    lw = max(2, int(2.4 * k))
-    for (x1, y1, x2, y2), col in [
-        ((8, 29, 32, 29), WHITE),
-        ((12, 33, 28, 33), WHITE),
-        ((20, 7.5, 20, 11), SUN_300),
-        ((11.6, 11.4, 14, 13.8), SUN_300),
-        ((28.4, 11.4, 26, 13.8), SUN_300),
-    ]:
-        d.line([ox + x1 * k, oy + y1 * k, ox + x2 * k, oy + y2 * k], fill=col, width=lw)
-        for (px, py) in ((x1, y1), (x2, y2)):
-            d.ellipse([ox + px * k - lw / 2, oy + py * k - lw / 2, ox + px * k + lw / 2, oy + py * k + lw / 2], fill=col)
+    p = int(S * pad)
+    d.rounded_rectangle([p, p, S - p, S - p], radius=int((S - 2 * p) * radius), fill=NAVY)
+    f = make_fonts(SANS, int((S - 2 * p) * 0.78), 800)
+    w = measure("e", f)
+    font = f[0][0]
+    bbox = font.getbbox("e")
+    x = (S - w) / 2
+    y = (S - (bbox[3] + bbox[1])) / 2
+    text(d, (x, y), "e", f, WHITE)
+    d.rectangle([p + (S - 2 * p) * 0.2, S - p - (S - 2 * p) * 0.16, S - p - (S - 2 * p) * 0.2, S - p - (S - 2 * p) * 0.12], fill=CYAN)
     return im.resize((size, size), Image.LANCZOS)
 
 
-def background(W, H):
-    im = Image.new("RGB", (W, H), NAVY_950)
-    bd = ImageDraw.Draw(im)
-    for y in range(H):
-        t = y / H
-        bd.line([(0, y), (W, y)], fill=tuple(int(NAVY_950[i] + (NAVY_900[i] + 6 - NAVY_950[i]) * t) for i in range(3)))
-    # sunčev sjaj
-    glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    g = ImageDraw.Draw(glow)
-    g.ellipse([W - 470, -330, W + 170, 310], fill=(255, 176, 32, 150))
-    g.ellipse([W - 330, -200, W + 30, 160], fill=(255, 225, 160, 200))
-    glow = glow.filter(ImageFilter.GaussianBlur(70))
-    im.paste(glow, (0, 0), glow)
-    cyan = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(cyan).ellipse([-300, H - 200, 500, H + 400], fill=(0, 160, 227, 90))
-    cyan = cyan.filter(ImageFilter.GaussianBlur(90))
-    im.paste(cyan, (0, 0), cyan)
-    return im
-
-
-def panel_field(im):
-    """Polje solarnih panela u perspektivi na dnu slike."""
-    W, H = im.size
-    S = 2
-    layer = Image.new("RGBA", (W * S, H * S), (0, 0, 0, 0))
-    d = ImageDraw.Draw(layer)
-    vx, vy = W * 0.62 * S, H * 0.62 * S
-    f = 260 * S
-
-    def proj(X, Z):
-        return (vx + X * f / Z, vy + f * 0.95 / Z)
-
-    pw, ph, gap = 1.7, 1.0, 0.1
-    for row in range(0, 26):
-        z0 = 1.0 + row * (ph + gap) * 0.55
-        z1 = z0 + ph * 0.55
-        if z0 > 12:
-            break
-        fade = max(0.0, 1 - (z0 - 1) / 9)
-        for col in range(-18, 19):
-            x0 = col * (pw + gap)
-            x1 = x0 + pw
-            quad = [proj(x0, z0), proj(x1, z0), proj(x1, z1), proj(x0, z1)]
-            if all(p[1] > H * S + 50 for p in quad):
-                continue
-            shade = 0.55 + 0.45 * fade
-            c = (int(22 * shade + 10), int(70 * shade + 12), int(150 * shade + 18), int(255 * (0.25 + 0.75 * fade)))
-            d.polygon(quad, fill=c)
-            line = (150, 210, 255, int(90 * fade))
-            for i in range(1, 6):
-                a = proj(x0 + pw * i / 6, z0)
-                b = proj(x0 + pw * i / 6, z1)
-                d.line([a, b], fill=line, width=1)
-            for j in range(1, 3):
-                zz = z0 + (z1 - z0) * j / 3
-                d.line([proj(x0, zz), proj(x1, zz)], fill=line, width=1)
-    layer = layer.resize((W, H), Image.LANCZOS)
-    # refleksija sunca na panelima (samo tamo gdje su paneli)
-    refl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    ImageDraw.Draw(refl).ellipse([W * 0.58, H * 0.62, W * 1.02, H * 1.02], fill=(255, 170, 70, 70))
-    refl = refl.filter(ImageFilter.GaussianBlur(60))
-    refl.putalpha(ImageChops.multiply(refl.split()[3], layer.split()[3]))
-    # meki prijelaz prema horizontu: alfa maska po visini
-    ramp = Image.new("L", (W, H), 0)
-    rd = ImageDraw.Draw(ramp)
-    y0, y1 = int(H * 0.6), int(H * 0.86)
-    for y in range(y0, H):
-        rd.line([(0, y), (W, y)], fill=int(255 * min(1, (y - y0) / (y1 - y0)) ** 1.4))
-    for l in (layer, refl):
-        l.putalpha(ImageChops.multiply(l.split()[3], ramp))
-        im.paste(l, (0, 0), l)
-
-
-def og(filename, line1, line2, sub, chips):
-    W, H = 1200, 630
-    im = background(W, H)
-    panel_field(im)
+def panel_pattern(im, box):
+    """Mreža solarnih ćelija u svijetloplavoj boji (desna strana OG slike)."""
+    x0, y0, x1, y1 = box
     d = ImageDraw.Draw(im)
-    # logo
-    mark = logo_mark(56)
-    im.paste(mark, (72, 64), mark)
-    word = make_fonts(SANS, 34, 800)
-    text(d, (140, 70), "EMSO", word, WHITE, tracking=-0.03)
-    small = make_fonts(SANS, 13, 600)
-    d.line([(244, 72), (244, 112)], fill=(255, 255, 255, 60), width=1)
-    text(d, (256, 76), "E-MOBILITY", small, (170, 178, 190), tracking=0.06)
-    text(d, (256, 94), "SOLUTIONS", small, (170, 178, 190), tracking=0.06)
-    # naslov
-    h1 = make_fonts(SANS, 84, 760)
-    text(d, (68, 168), line1, h1, WHITE, tracking=-0.045)
-    serif = make_fonts(SERIF, 92)
-    # sunčani gradijent za drugi red
-    w2 = int(measure(line2, serif, -0.01)) + 20
-    txt = Image.new("L", (w2, 120), 0)
-    text(ImageDraw.Draw(txt), (0, 0), line2, serif, 255, tracking=-0.01)
-    grad = Image.new("RGB", (w2, 120))
-    gd = ImageDraw.Draw(grad)
-    for x in range(w2):
-        t = x / max(1, w2 - 1)
-        c = tuple(int(a + (b - a) * t) for a, b in zip((255, 217, 138), (255, 122, 26)))
-        gd.line([(x, 0), (x, 120)], fill=c)
-    im.paste(grad, (70, 258), txt)
-    # podnaslov
-    subf = make_fonts(SANS, 27, 450)
-    text(d, (72, 386), sub, subf, MUTED, tracking=-0.005)
-    # čipovi
-    chipf = make_fonts(SANS, 21, 650)
+    d.rectangle(box, fill=SKY)
+    pw, ph, gap = 118, 176, 10
+    y = y0 + 40
+    while y < y1:
+        x = x0 + 40
+        while x < x1:
+            d.rectangle([x, y, x + pw, y + ph], fill=WHITE, outline=SKY_2, width=2)
+            for i in range(1, 4):
+                d.line([(x + pw * i / 4, y), (x + pw * i / 4, y + ph)], fill=SKY_2, width=1)
+            for j in range(1, 6):
+                d.line([(x, y + ph * j / 6), (x + pw, y + ph * j / 6)], fill=SKY_2, width=1)
+            x += pw + gap
+        y += ph + gap
+
+
+def og(filename, title, sub, chips):
+    W, H = 1200, 630
+    im = Image.new("RGB", (W, H), WHITE)
+    panel_pattern(im, (780, 0, W, H))
+    d = ImageDraw.Draw(im)
+    d.rectangle([0, 0, 12, H], fill=BLUE)
+    # logo (tekstualno)
+    word = make_fonts(SANS, 40, 800)
+    text(d, (72, 62), "EMSO", word, NAVY)
+    small = make_fonts(SANS, 18, 600)
+    text(d, (74, 112), "e-mobility solutions", small, BLUE)
+    # naslov u više redova
+    h1 = make_fonts(SANS, 64, 700)
+    y = 200
+    for line in title:
+        text(d, (70, y), line, h1, NAVY, tracking=-0.02)
+        y += 78
+    subf = make_fonts(SANS, 25, 500)
+    text(d, (72, y + 14), sub, subf, MUTED)
+    chipf = make_fonts(SANS, 20, 600)
     x = 72
     for c in chips:
-        w = measure(c, chipf) + 40
-        chip = Image.new("RGBA", (int(w), 46), (0, 0, 0, 0))
-        ImageDraw.Draw(chip).rounded_rectangle([0, 0, w - 1, 45], radius=23, fill=(255, 255, 255, 26), outline=(255, 255, 255, 60))
-        im.paste(chip, (int(x), 470), chip)
-        text(d, (x + 20, 480), c, chipf, WHITE)
-        x += w + 12
+        w = measure(c, chipf) + 32
+        d.rounded_rectangle([x, 520, x + w, 562], radius=4, fill=SKY, outline=SKY_2)
+        text(d, (x + 16, 529), c, chipf, NAVY)
+        x += w + 10
     im.save(os.path.join(OUT, filename), optimize=True)
     print("✓", filename)
 
 
 def icons():
-    logo_mark(512).save(os.path.join(OUT, "emso-logo-512.png"), optimize=True)
-    logo_mark(32).save(os.path.join(OUT, "favicon-32.png"), optimize=True)
-    logo_mark(192, bg=NAVY_950, pad=0.12).save(os.path.join(OUT, "icon-192.png"), optimize=True)
-    logo_mark(512, bg=NAVY_950, pad=0.12).save(os.path.join(OUT, "icon-512.png"), optimize=True)
-    logo_mark(512, bg=NAVY_950, pad=0.22).save(os.path.join(OUT, "icon-512-maskable.png"), optimize=True)
-    logo_mark(180, bg=NAVY_950, pad=0.14).convert("RGB").save(os.path.join(OUT, "apple-touch-icon.png"), optimize=True)
+    icon(32).save(os.path.join(OUT, "favicon-32.png"), optimize=True)
+    icon(192).save(os.path.join(OUT, "icon-192.png"), optimize=True)
+    icon(512).save(os.path.join(OUT, "icon-512.png"), optimize=True)
+    icon(512, pad=0.0, radius=0).save(os.path.join(OUT, "icon-512-maskable.png"), optimize=True)
+    icon(180, radius=0).convert("RGB").save(os.path.join(OUT, "apple-touch-icon.png"), optimize=True)
     print("✓ ikone")
 
 
@@ -229,22 +148,19 @@ if __name__ == "__main__":
     icons()
     og(
         "og-solarne-elektrane.png",
-        "Solarne elektrane",
-        "ključ u ruke",
-        "Besplatno savjetovanje i ponuda · montaža u 1 dan · jamstvo do 25 god.",
+        ["Solarne elektrane", "ključ u ruke"],
+        "Savjetovanje i ponuda besplatno. Montaža u 1 dan.",
         ["2.074 elektrane", "Partner E.ON-a", "Kalkulator uštede"],
     )
     og(
         "og-elektro-punionice.png",
-        "Punionice za vozila",
-        "ključ u ruke",
-        "Kućne, poslovne i javne punionice · projekt, montaža i servis",
+        ["Elektro punionice", "ključ u ruke"],
+        "Kućne, poslovne i javne punionice. Projekt, montaža, servis.",
         ["Partner HT-a", "ETREL", "Kalkulator punjenja"],
     )
     og(
         "og-poticaji-2026.png",
-        "Poticaji 2026.",
-        "do 50 % sufinanciranja",
-        "FZOEU: do 6.000 € za elektranu · do 5.600 € za bateriju · 0 % PDV",
-        ["Kalkulator poticaja", "Uvjeti i iznosi", "Neto obračun"],
+        ["Poticaji za solarne", "elektrane 2026."],
+        "FZOEU: do 50 % sufinanciranja, do 6.000 € za elektranu.",
+        ["Kalkulator poticaja", "Uvjeti i iznosi", "0 % PDV"],
     )

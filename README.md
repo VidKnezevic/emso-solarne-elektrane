@@ -8,7 +8,7 @@ Nova web stranica za **EMSO e-mobility solutions d.o.o.**: solarne elektrane po 
 
 | URL | Sadržaj |
 | --- | --- |
-| `/` | Solarne elektrane: hero s brzim izračunom, statistike, proces „ključ u ruke“, interaktivna simulacija toka energije kroz dan, kalkulator uštede, prednosti, oprema i aplikacija, tvrtke, reference, vodič 2026., FAQ |
+| `/` | Solarne elektrane: hero s videom EMSO elektrane i brzim izračunom, brojke, partneri, proces „ključ u ruke“, montaža, kalkulator uštede, simulacija toka energije kroz dan, prednosti, tvrtke, reference (fotografije i videi), vodič 2026., FAQ |
 | `/elektro-punionice/` | Punionice: usluge, izbor snage (3,7–22 kW), kalkulator troškova punjenja (benzin / javno / kućno / solar), vrijeme punjenja, FAQ |
 | `/poticaji-za-solarne-elektrane-2026/` | FZOEU javni poziv 2026., tablica iznosa, kalkulator poticaja, postupak, 0 % PDV, neto obračun, FAQ |
 
@@ -31,7 +31,7 @@ Svaki `push` na `main` automatski objavljuje stranicu (`.github/workflows/deploy
 1. Build s produkcijskom adresom: `SITE_URL=https://emso.hr node build.mjs` (ili u GitHubu postavite repozitorijsku varijablu `SITE_URL`). Canonical, Open Graph, sitemap, robots.txt i strukturirani podaci automatski prelaze na novu domenu.
 2. Za postojeće URL-ove napravite 301 preusmjerenja: `/solarne-elektrane` → `/`, a `/elektro-punionice` već odgovara novoj adresi.
 3. U Google Search Console prijavite `https://emso.hr/sitemap.xml`.
-4. Fotografije referenci trenutno se učitavaju s `emso.hr/files/…` – za produkciju ih kopirajte u `src/assets/img/` (po mogućnosti WebP/AVIF) i ažurirajte putanje.
+4. EMSO-ovi mediji trenutno se učitavaju izravno s `emso.hr/files/…`: logo (`SIMBOL.webp`), video u heroju (AluK Tim), videi referenci (IVERPAN, Jakuševec), fotografije referenci i logotipovi partnera. Za produkciju ih kopirajte u `src/assets/`, adrese promijenite u `site.config.mjs` (`media`) i na stranicama, a hero video po mogućnosti skratite i komprimirajte (npr. 720p, bez zvuka, 3–5 MB).
 
 ## Obrazac za ponudu
 
@@ -43,7 +43,11 @@ U `site.config.mjs` postavite `formEndpoint` (npr. Formspree, Web3Forms ili vlas
 - Strukturirani podaci (JSON-LD): `HomeAndConstructionBusiness` (NAP, radno vrijeme, OIB, nagrada), `WebSite`, `WebPage`, `Service` s katalogom usluga, `FAQPage`, `Article` i `BreadcrumbList`.
 - Semantički HTML, jedan `h1` po stranici, logična hijerarhija naslova, opisni `alt` tekstovi, interni linkovi između stranica.
 - `sitemap.xml`, `robots.txt`, `llms.txt` (za AI pretraživače), web manifest i ikone.
-- Brzina: bez frameworka, fontovi su self-hosted (bez Google Fonts poziva – i GDPR prednost), JS se učitava kao `module`, slike imaju dimenzije i `loading="lazy"`.
+- Brzina: bez frameworka, font Montserrat je self-hosted (bez Google Fonts poziva, što je i GDPR prednost), JS se učitava kao `module`, slike imaju dimenzije i `loading="lazy"`, hero video kreće tek nakon učitavanja stranice, a videi referenci samo dok su vidljivi.
+
+## Dizajn
+
+Bijela podloga i EMSO plave boje (#0A2344, #1E73BE, #00A0E3) kao na emso.hr, font Montserrat, ravne površine bez gradijenata i dekoracija. Boje su definirane kao varijable na vrhu `src/assets/css/main.css`.
 - Bez kolačića i praćenja – nije potreban cookie banner. Ako dodate Google Analytics, dodajte i upravljanje privolama.
 
 ## Kalkulatori – pretpostavke
