@@ -24,7 +24,7 @@ SITE_URL=http://localhost:4173 node build.mjs    # build za lokalni pregled
 python3 -m http.server 4173 --directory dist     # lokalni server
 ```
 
-Svaki `push` na `main` automatski objavljuje stranicu (`.github/workflows/deploy.yml`).
+Svaki `push` na `main` automatski objavljuje stranicu (`.github/workflows/deploy.yml`), a nakon objave se pokreće Lighthouse provjera svih stranica na mobitelu i desktopu (`.github/workflows/lighthouse.yml`) – rezultati su u sažetku runa pod **Actions**, a HTML izvještaji kao artefakti.
 
 ## Prelazak na emso.hr
 
