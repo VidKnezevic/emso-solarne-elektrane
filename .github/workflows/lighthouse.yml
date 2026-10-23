@@ -2,6 +2,11 @@ name: Lighthouse provjera
 
 on:
   workflow_dispatch:
+    inputs:
+      trace:
+        description: Spremi i performance trace
+        type: boolean
+        default: false
   workflow_run:
     workflows: ["Objava na GitHub Pages"]
     types: [completed]
@@ -32,7 +37,7 @@ jobs:
           npx -y lighthouse@12 "$URL" $PRESET --quiet \
             --only-categories=performance,accessibility,best-practices,seo \
             --chrome-flags="--headless=new --no-sandbox" \
-            --output=json --output=html --output-path=./report
+            --output=json --output=html --output-path=./report ${{ inputs.trace && '--save-assets' || '' }}
           node -e '
             const r = require("./report.report.json");
             const s = Object.values(r.categories).map(c => `${c.title}: ${Math.round(c.score * 100)}`).join(" · ");
@@ -49,4 +54,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: lighthouse-${{ matrix.device }}-${{ strategy.job-index }}
-          path: report.report.html
+          path: |
+            report.report.html
+            report-0.trace.json
