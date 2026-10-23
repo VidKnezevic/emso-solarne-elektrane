@@ -209,7 +209,7 @@ address { font-style: normal; }
   margin-bottom: 26px;
 }
 .pill__dot, .live-dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex: none; }
-.pill__dot::after, .live-dot::after, .app__live i::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--green); animation: ping 2.2s var(--ease) infinite; }
+.pill__dot::after, .live-dot::after, .app__live i::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--green); animation: ping 2.2s var(--ease) 2.5s infinite; }
 @keyframes ping { 0% { transform: scale(1); opacity: .6; } 80%, 100% { transform: scale(3.4); opacity: 0; } }
 .tag { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: .74rem; font-weight: 700; letter-spacing: .02em; vertical-align: middle; }
 .tag--free { background: rgba(61, 220, 151, .16); color: #0B7A4B; }
@@ -397,7 +397,7 @@ main > .section { content-visibility: auto; contain-intrinsic-size: auto 900px; 
   border-radius: 50%;
   background: radial-gradient(circle, #FFF1C9 0%, #FFC14D 22%, rgba(255, 140, 26, .55) 42%, rgba(255, 122, 26, .12) 60%, transparent 70%);
   filter: blur(6px);
-  animation: sunPulse 9s ease-in-out infinite;
+  animation: sunPulse 9s ease-in-out 2.5s infinite;
 }
 @keyframes sunPulse { 0%, 100% { transform: scale(1); opacity: .95; } 50% { transform: scale(1.06); opacity: 1; } }
 .hero__field {
@@ -420,7 +420,7 @@ main > .section { content-visibility: auto; contain-intrinsic-size: auto 900px; 
 .hero__shine {
   position: absolute; top: 0; bottom: 0; left: -40%; width: 40%;
   background: linear-gradient(100deg, transparent 0%, rgba(255, 214, 140, .4) 50%, transparent 100%);
-  animation: shine 9s linear infinite;
+  animation: shine 9s linear 2.5s infinite;
   will-change: transform;
 }
 @keyframes shine { from { transform: translateX(0); } to { transform: translateX(350%); } }
@@ -433,7 +433,7 @@ main > .section { content-visibility: auto; contain-intrinsic-size: auto 900px; 
 .hero__trust li + li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: rgba(255, 255, 255, .35); margin-right: 22px; align-self: center; }
 .hero__trust strong { color: #fff; font-weight: 700; }
 .hero__scroll { position: absolute; left: 50%; bottom: 28px; transform: translateX(-50%); width: 26px; height: 42px; border-radius: 14px; border: 2px solid rgba(255, 255, 255, .3); }
-.hero__scroll span { position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: #fff; animation: scrollDot 1.8s var(--ease) infinite; }
+.hero__scroll span { position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: #fff; animation: scrollDot 1.8s var(--ease) 2.5s infinite; }
 @keyframes scrollDot { 0% { opacity: 0; transform: translateY(0); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
 
 /* Brzi kalkulator u heroju */
@@ -465,7 +465,7 @@ main > .section { content-visibility: auto; contain-intrinsic-size: auto 900px; 
 /* ---------- Partneri (marquee) ---------- */
 .partners { background: var(--navy-950); color: #fff; padding: 28px 0 40px; border-bottom: 1px solid rgba(255, 255, 255, .06); overflow: hidden; }
 .marquee { -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
-.marquee__track { display: flex; width: max-content; gap: 64px; list-style: none; margin: 0; padding: 0; animation: marquee 48s linear infinite; }
+.marquee__track { display: flex; width: max-content; gap: 64px; list-style: none; margin: 0; padding: 0; animation: marquee 48s linear 2s infinite; }
 .marquee:hover .marquee__track { animation-play-state: paused; }
 .marquee__track li { display: grid; gap: 2px; font-size: 1.5rem; font-weight: 400; letter-spacing: -.02em; color: rgba(255, 255, 255, .86); white-space: nowrap; }
 .marquee__track b { font-weight: 800; }
