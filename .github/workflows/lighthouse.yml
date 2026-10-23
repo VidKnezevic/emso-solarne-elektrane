@@ -1,0 +1,49 @@
+name: Lighthouse provjera
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Objava na GitHub Pages"]
+    types: [completed]
+
+jobs:
+  audit:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        page: ["", "elektro-punionice/", "poticaji-za-solarne-elektrane-2026/"]
+        device: [mobile, desktop]
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Lighthouse
+        env:
+          BASE: ${{ vars.SITE_URL || 'https://vidknezevic.github.io/emso-solarne-elektrane' }}
+        run: |
+          URL="$BASE/${{ matrix.page }}"
+          PRESET=""
+          [ "${{ matrix.device }}" = "desktop" ] && PRESET="--preset=desktop"
+          npx -y lighthouse@12 "$URL" $PRESET --quiet \
+            --only-categories=performance,accessibility,best-practices,seo \
+            --chrome-flags="--headless=new --no-sandbox" \
+            --output=json --output=html --output-path=./report
+          node -e '
+            const r = require("./report.report.json");
+            const s = Object.values(r.categories).map(c => `${c.title}: ${Math.round(c.score * 100)}`).join(" · ");
+            const a = r.audits;
+            console.log(`${process.env.URL || r.finalDisplayedUrl} [${"${{ matrix.device }}"}] → ${s}`);
+            console.log(`LCP ${a["largest-contentful-paint"].displayValue} · CLS ${a["cumulative-layout-shift"].displayValue} · TBT ${a["total-blocking-time"].displayValue}`);
+            for (const c of Object.values(r.categories))
+              for (const ref of c.auditRefs) {
+                const au = a[ref.id];
+                if (ref.weight > 0 && au.score !== null && au.score < 0.9) console.log(`  ✗ ${c.id}: ${au.title} (${au.score})`);
+              }
+            require("fs").appendFileSync(process.env.GITHUB_STEP_SUMMARY, `**${r.finalDisplayedUrl}** (${"${{ matrix.device }}"}): ${s}\n\n`);
+          '
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-${{ matrix.device }}-${{ strategy.job-index }}
+          path: report.report.html
