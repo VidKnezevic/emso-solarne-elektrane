@@ -6,7 +6,9 @@ const nf2 = new Intl.NumberFormat('hr-HR', { minimumFractionDigits: 2, maximumFr
 export const n0 = (v) => nf0.format(Math.round(v));
 export const n1 = (v) => nf1.format(v);
 export const n2 = (v) => nf2.format(v);
-export const eur = (v) => `${n0(v)} €`;
+// Tvrdi razmak da se iznos i jedinica ne lome u dva reda.
+export const eur = (v) => `${n0(v)}\u00A0€`;
+export const pct = (v) => `${n0(v)}\u00A0%`;
 export const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 /** Zaokruži na "lijep" broj za prikaz iznosa (npr. 6.237 → 6.250). */

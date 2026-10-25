@@ -8,7 +8,7 @@ Nova web stranica za **EMSO e-mobility solutions d.o.o.**: solarne elektrane po 
 
 | URL | Sadržaj |
 | --- | --- |
-| `/` | Solarne elektrane: hero s videom EMSO elektrane i brzim izračunom, brojke, partneri, proces „ključ u ruke“, montaža, kalkulator uštede, simulacija toka energije kroz dan, prednosti, tvrtke, reference (fotografije i videi), vodič 2026., FAQ |
+| `/` | Solarne elektrane: hero s videom EMSO elektrane i brzim izračunom, brojke, partneri, proces „ključ u ruke“, montaža, kalkulator uštede (tri pitanja), prikaz toka energije za četiri doba dana s baterijom i bez nje, prednosti, tvrtke, reference (fotografije i videi), vodič 2026., FAQ |
 | `/elektro-punionice/` | Punionice: usluge, izbor snage (3,7–22 kW), kalkulator troškova punjenja (benzin / javno / kućno / solar), vrijeme punjenja, FAQ |
 | `/poticaji-za-solarne-elektrane-2026/` | FZOEU javni poziv 2026., tablica iznosa, kalkulator poticaja, postupak, 0 % PDV, neto obračun, FAQ |
 
@@ -52,7 +52,7 @@ Bijela podloga i EMSO plave boje (#0A2344, #1E73BE, #00A0E3) kao na emso.hr, fon
 
 ## Kalkulatori – pretpostavke
 
-`src/assets/js/solar-model.js` sadrži sve pretpostavke na jednom mjestu:
+`src/assets/js/solar-model.js` sadrži sve pretpostavke na jednom mjestu. Kalkulator na naslovnici pita samo mjesečni račun, regiju te želi li korisnik bateriju (10 kWh) i punjenje auta (15.000 km godišnje); krov se pretpostavlja prema jugu, a poticaj FZOEU je uključen. Prikaz toka energije koristi `src/assets/js/flow-model.js` (sunčani ljetni dan, elektrana 6,3 kWp, baterija 10 kWh).
 
 - Proizvodnja po regiji (PVGIS procjena, kWh/kWp): sjever 1.150, Zagreb 1.180, Lika 1.200, Slavonija 1.220, Istra i Kvarner 1.320, sjeverna Dalmacija 1.420, srednja i južna Dalmacija 1.460.
 - Cijena struje 0,16 €/kWh za kućanstva (sve uključeno) i 0,20 €/kWh za tvrtke; vrijednost viška u mreži 0,07 €/kWh, priznaje se najviše do količine preuzete u istom mjesecu (neto obračun 2026.).
