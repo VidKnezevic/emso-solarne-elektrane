@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from './Icons';
 import { FORM_ENDPOINT, company } from '@/lib/site';
+import { BILLS, CUSTOMERS, objectFor } from '@/lib/inquiry';
 
 const INTERESTS = [
   { value: 'Solarna elektrana', icon: 'panel' },
@@ -10,7 +11,6 @@ const INTERESTS = [
   { value: 'Solarna elektrana i punionica', icon: 'car' },
   { value: 'Punionica za električno vozilo', icon: 'plug' },
 ];
-const BILLS = ['do 50 €', '50–100 €', '100–150 €', '150–250 €', 'više od 250 €'];
 const PLANS = ['Dizalica topline', 'Klima uređaji', 'Električni automobil', 'Bazen'];
 const OBJECTS = ['Obiteljska kuća', 'Vikendica', 'Stambena zgrada', 'Tvrtka', 'Poljoprivredni objekt'];
 const ROOFS = ['Crijep', 'Lim ili sendvič panel', 'Ravni krov', 'Tlo ili nadstrešnica', 'Ne znam'];
@@ -20,6 +20,7 @@ const STEPS = ['Potrošnja', 'Objekt', 'Kontakt'];
 
 const EMPTY = {
   interes: INTERESTS[0].value,
+  kupac: CUSTOMERS[0].value,
   racun: '',
   planovi: [],
   objekt: OBJECTS[0],
@@ -72,11 +73,15 @@ export default function InquiryForm({ defaultInterest, heading = 'Zatražite izr
   const chargerOnly = data.interes === 'Punionica za električno vozilo';
   const set = (k) => (v) => setData((d) => ({ ...d, [k]: v }));
   const field = (k) => ({ value: data[k], onChange: (e) => set(k)(e.target.value) });
+  // Kućanstvo ili tvrtka mijenja raspone računa i zadani objekt.
+  const setKupac = (kupac) =>
+    setData((d) => ({ ...d, kupac, objekt: objectFor(kupac), racun: BILLS[kupac].includes(d.racun) ? d.racun : '' }));
 
-  // Odabir računa iz kartice u heroju.
+  // Odabir iz kartice u heroju ili s gumba koji unaprijed bira interes.
   useEffect(() => {
     const onPrefill = (e) => {
-      setData((d) => ({ ...d, ...e.detail }));
+      const { kupac, ...rest } = e.detail;
+      setData((d) => ({ ...d, ...rest, ...(kupac && { kupac, objekt: objectFor(kupac) }) }));
       setStep(0);
     };
     addEventListener('emso:prefill', onPrefill);
@@ -121,6 +126,7 @@ export default function InquiryForm({ defaultInterest, heading = 'Zatražite izr
     if (msg) return;
 
     const payload = {
+      kupac: data.kupac,
       interes: data.interes,
       racun: chargerOnly ? '' : data.racun,
       planovi: data.planovi.join(', '),
@@ -159,6 +165,7 @@ export default function InquiryForm({ defaultInterest, heading = 'Zatražite izr
       '',
       'molim vas izračun i ponudu prema sljedećim podacima:',
       '',
+      `Ponuda je za: ${payload.kupac}`,
       `Zanima me: ${payload.interes}`,
       payload.racun && `Mjesečni račun za struju: ${payload.racun}`,
       payload.planovi && `Planiram: ${payload.planovi}`,
@@ -230,10 +237,14 @@ export default function InquiryForm({ defaultInterest, heading = 'Zatražite izr
                     <legend className="wizard__q" tabIndex={-1} ref={stepRef}>Što vas zanima?</legend>
                     <Choices name="interes" options={INTERESTS} value={data.interes} onChange={set('interes')} cards />
                   </fieldset>
+                  <fieldset>
+                    <legend className="wizard__sub">Ponuda je za</legend>
+                    <Choices name="kupac" options={CUSTOMERS} value={data.kupac} onChange={setKupac} />
+                  </fieldset>
                   {!chargerOnly && (
                     <fieldset>
                       <legend className="wizard__sub">Koliki je vaš prosječni mjesečni račun za struju?</legend>
-                      <Choices name="racun" options={BILLS} value={data.racun} onChange={set('racun')} />
+                      <Choices name="racun" options={BILLS[data.kupac]} value={data.racun} onChange={set('racun')} />
                     </fieldset>
                   )}
                   <fieldset>
