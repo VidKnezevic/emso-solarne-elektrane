@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        page: ["", "elektro-punionice/", "poticaji-za-solarne-elektrane-2026/"]
+        page: ["", "elektro-punionice/", "poticaji-za-solarne-elektrane-2026/", "vodic-solarne-elektrane-2026/"]
         device: [mobile, desktop]
     steps:
       - name: Pričekaj propagaciju CDN-a

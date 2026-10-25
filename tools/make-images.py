@@ -1,4 +1,4 @@
-"""Generira OG slike (1200×630) i ikone u src/assets/img/.
+"""Generira OG slike (1200×630) i ikone u public/img/.
 
 Pokretanje:  python3 tools/make-images.py
 Potrebno:    pip install pillow fonttools brotli
@@ -11,8 +11,8 @@ from fontTools.ttLib import TTFont
 from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-FONTS = os.path.join(ROOT, "src", "assets", "fonts")
-OUT = os.path.join(ROOT, "src", "assets", "img")
+FONTS = os.path.join(ROOT, "public", "fonts")
+OUT = os.path.join(ROOT, "public", "img")
 
 NAVY = (10, 35, 68)
 BLUE = (0, 104, 181)

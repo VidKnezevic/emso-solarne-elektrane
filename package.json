@@ -1,13 +1,20 @@
 {
   "name": "emso-solarne-elektrane",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "type": "module",
-  "description": "EMSO – web stranica za solarne elektrane i punionice (statički build bez ovisnosti)",
+  "description": "EMSO – solarne elektrane i punionice (Next.js, statički export)",
   "scripts": {
-    "build": "node build.mjs",
-    "build:prod": "SITE_URL=https://emso.hr node build.mjs",
-    "serve": "python3 -m http.server 8080 --directory dist"
+    "dev": "next dev",
+    "build": "next build",
+    "build:prod": "SITE_URL=https://emso.hr next build",
+    "serve": "python3 -m http.server 4173 --directory out"
   },
-  "engines": { "node": ">=18" }
+  "engines": {
+    "node": ">=20.9"
+  },
+  "dependencies": {
+    "next": "16.4.3",
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  }
 }
