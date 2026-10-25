@@ -798,6 +798,123 @@ h1, h2, h3, h4 { color: var(--navy); font-weight: 700; text-wrap: balance; }
 .nf .lead { margin: 0 auto 28px; }
 .nf .hero__ctas { justify-content: center; }
 
+/* ---------- Mobitel: kraće i preglednije (desktop i tablet ostaju isti) ---------- */
+@media (max-width: 640px) {
+  .section { padding-block: 52px; }
+  .section--tight { padding-block: 36px; }
+  .sec-head { margin-bottom: 24px; }
+  .lead { font-size: 1rem; line-height: 1.6; }
+
+  /* Hero: naslov, kratki uvod i odmah kartica za ponudu */
+  .hero__grid { gap: 24px; padding-block: 32px 44px; }
+  .hero__lead { margin-top: 14px; font-size: 1rem; }
+  .hero__ctas, .hero__steps { display: none; }
+
+  /* Brojke i partneri */
+  .facts__grid li { padding: 16px 16px 14px; }
+  .facts__num { font-size: 1.45rem; }
+  .facts__txt { font-size: .8rem; }
+  .trust__logos { padding-block: 24px 28px; }
+  .logos__head p { font-size: .86rem; line-height: 1.5; }
+
+  /* Vodoravne trake: logotipovi i reference se listaju prstom */
+  ul.logos__grid, .refs__grid {
+    display: flex; gap: 10px; overflow-x: auto; overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) 4px;
+  }
+  .logos__grid::-webkit-scrollbar, .refs__grid::-webkit-scrollbar { display: none; }
+  .logos__grid li { flex: 0 0 88px; height: 88px; scroll-snap-align: start; }
+  .refs__grid > .ref { flex: 0 0 84%; scroll-snap-align: start; }
+  #reference .sec-head .lead { display: none; }
+  .refs__more { margin-top: 20px; }
+  .refs__more .btn { flex: 1; padding-inline: 12px; }
+
+  /* Prednosti: 2 × 2 bez opisa */
+  .cards4, .cards3 { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .bcard, .cards3 .benefit { padding: 16px 14px; border: 1px solid var(--line); border-radius: var(--r-card); background: #fff; }
+  .bcard svg, .cards3 .benefit svg { width: 24px; height: 24px; }
+  .bcard h3, .cards3 .benefit h3 { margin: 10px 0 0; font-size: .95rem; line-height: 1.3; }
+  .bcard p, .cards3 .benefit p { display: none; }
+
+  /* Rješenja: kratki popis s poveznicama */
+  .solutions { grid-template-columns: 1fr; gap: 8px; margin-top: 24px; }
+  .solution { grid-template-columns: 24px minmax(0, 1fr) auto; column-gap: 14px; row-gap: 2px; align-items: center; padding: 14px 16px; }
+  .solution svg { grid-row: span 2; }
+  .solution b { font-size: .95rem; }
+  .solution span { grid-column: 2; font-size: .82rem; line-height: 1.45; }
+  .solution em { display: none; }
+  .solution::after { content: "→"; grid-column: 3; grid-row: 1 / span 2; color: var(--blue); font-weight: 700; }
+
+  /* Program preporuke: naslov, nagrada, koraci, dijeljenje */
+  .referral { display: flex; flex-direction: column; gap: 0; }
+  .referral__copy { display: contents; }
+  .referral .label { order: 1; align-self: flex-start; }
+  .referral__copy .h2 { order: 2; margin-bottom: 18px; }
+  .referral__copy .lead { display: none; }
+  .reward { order: 3; margin-bottom: 24px; padding: 20px; }
+  .reward > svg { display: none; }
+  .reward__label { margin-top: 0; }
+  .reward__amount { margin: 4px 0 8px; font-size: 3rem; }
+  .reward p:not([class]) { font-size: .9rem; }
+  .reward .btn { width: 100%; margin-top: 16px; }
+  .referral .numlist { order: 4; }
+  .referral__share { order: 5; margin-top: 22px; }
+  .referral__share .btn { flex: 1; }
+  .referral__terms { order: 6; }
+
+  /* Proces */
+  .process { gap: 28px; }
+  .process__media video { height: auto; aspect-ratio: 16 / 10; }
+  .process__media .ticks { display: none; }
+  .step { grid-template-columns: 34px 1fr; gap: 2px 12px; padding: 14px 0; }
+  .step__n { width: 32px; height: 32px; font-size: .85rem; }
+  .step__t { font-size: 1rem; }
+  .step p { font-size: .88rem; }
+
+  /* Upit: bez ponavljanja koraka i telefona (ima ih u obrascu i donjoj traci) */
+  .inquiry__grid { gap: 20px; }
+  .inquiry__intro .lead { margin-bottom: 0; }
+  .inquiry__how, .inquiry__direct { display: none; }
+
+  /* Poticaji */
+  .notice { gap: 20px; padding: 20px; }
+  .notice .btn { margin-top: 16px; }
+  .notice__facts { grid-template-columns: 1fr 1fr; }
+  .notice__facts li { padding: 12px; }
+  .notice__facts li + li { border-top: 0; }
+  .notice__facts li:nth-child(even) { border-left: 1px solid var(--line); }
+  .notice__facts li:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .notice__facts b { font-size: 1.1rem; }
+  .notice__facts span { font-size: .78rem; }
+
+  /* Tvrtke */
+  .split { gap: 24px; }
+  .split__media img, .split__media video { aspect-ratio: 16 / 9; }
+
+  /* Česta pitanja */
+  .qa summary { padding: 15px 0; font-size: .95rem; }
+
+  /* Podstranice */
+  .subhero { padding: 28px 0 36px; }
+  .keyfacts div { padding: 12px 14px; }
+  .keyfacts b { font-size: 1.2rem; }
+  .keyfacts span { font-size: .78rem; }
+  .power { grid-template-columns: 1fr 1fr; }
+  .power__c { padding: 16px 14px; }
+  .power__c + .power__c { border-top: 0; border-left: 0; }
+  .power__c:nth-child(even) { border-left: 1px solid var(--line); }
+  .power__c:nth-child(n + 3) { border-top: 1px solid var(--line); }
+  .power__c > p:not([class]) { display: none; }
+  .power__c .power__kw { font-size: 1.6rem; }
+  .power__c .power__ph { color: var(--blue); font-size: .82rem; }
+
+  /* Podnožje u dva stupca */
+  .ftr { padding-top: 40px; }
+  .ftr__top { grid-template-columns: 1fr 1fr; gap: 28px 20px; padding-bottom: 28px; }
+  .ftr__brand { grid-column: 1 / -1; }
+}
+
 @media print {
   .hdr, .mbar, .wa-fab, .hero__media, .inquiry, .flow__app { display: none !important; }
   .hero { background: #fff; color: #000; }
