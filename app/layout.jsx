@@ -3,6 +3,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileBar from '@/components/MobileBar';
+import ScrollManager from '@/components/ScrollManager';
 import JsonLd from '@/components/JsonLd';
 import { IconSprite } from '@/components/Icons';
 import { SITE_URL, asset, company } from '@/lib/site';
@@ -60,6 +61,7 @@ export default function RootLayout({ children }) {
         <main id="main">{children}</main>
         <Footer />
         <MobileBar />
+        <ScrollManager />
         <JsonLd data={organizationGraph} />
       </body>
     </html>
